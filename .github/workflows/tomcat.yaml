@@ -2,9 +2,9 @@ name: SonarQube Analysis
 
 on:
   push:
-    branches: 
-    - master
- 
+    branches:
+      - master
+
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
@@ -19,19 +19,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
       - name: SonarQube Scan
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-           sonarqube \
-            -Dsonar.projectKey=train-ticket-reservation \
-            -Dsonar.host.url=http://18.144.74.114:9000 \
-            -Dsonar.login=$SONAR_TOKEN
-            
+        with:
+          args: >
+            -Dsonar.projectKey=train-ticket-reservation
+            -Dsonar.host.url=http://54.152.181.218:9004
